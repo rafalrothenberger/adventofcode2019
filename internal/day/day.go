@@ -17,6 +17,8 @@ var days = map[string]interface{}{
 	"6_2": Day6Task2,
 	"7_1": Day7Task1,
 	"7_2": Day7Task2,
+	"8_1": Day8Task1,
+	"8_2": Day8Task2,
 }
 
 // Run ...
