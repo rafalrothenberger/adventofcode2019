@@ -12,8 +12,12 @@ type Parser struct {
 
 // NewParser ...
 func NewParser(input []int, stdin, stdout chan int) *Parser {
+	in := make([]int, len(input)*10)
+	for i, a := range input {
+		in[i] = a
+	}
 	return &Parser{
-		input:  input,
+		input:  in,
 		stdin:  stdin,
 		stdout: stdout,
 		pc:     0,
@@ -23,7 +27,8 @@ func NewParser(input []int, stdin, stdout chan int) *Parser {
 // Parse ...
 func (p *Parser) Parse() []int {
 	i := 0
-	n := len(p.input)
+	// n := len(p.input)
+	relBase := 0
 	for true {
 		if p.input[i] == 99 {
 			// close(p.stdin)
@@ -34,9 +39,9 @@ func (p *Parser) Parse() []int {
 		parMode1 := (p.input[i] / 100) % 10
 		parMode2 := (p.input[i] / 1000) % 10
 		parMode3 := (p.input[i] / 10000) % 10
-		a := (i + 1) % n
-		b := (i + 2) % n
-		c := (i + 3) % n
+		a := (i + 1)
+		b := (i + 2)
+		c := (i + 3)
 		if parMode1 == 0 {
 			a = p.input[a]
 		}
@@ -45,6 +50,15 @@ func (p *Parser) Parse() []int {
 		}
 		if parMode3 == 0 {
 			c = p.input[c]
+		}
+		if parMode1 == 2 {
+			a = p.input[a] + relBase
+		}
+		if parMode2 == 2 {
+			b = p.input[b] + relBase
+		}
+		if parMode3 == 2 {
+			c = p.input[c] + relBase
 		}
 		switch opcode {
 		case 1:
@@ -94,6 +108,9 @@ func (p *Parser) Parse() []int {
 				p.input[c] = 0
 			}
 			i += 4
+		case 9:
+			relBase += p.input[a]
+			i += 2
 		}
 	}
 
