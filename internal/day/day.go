@@ -23,6 +23,8 @@ var days = map[string]interface{}{
 	"9_2":  Day9Task2,
 	"10_1": Day10Task1,
 	"10_2": Day10Task2,
+	"11_1": Day11Task1,
+	"11_2": Day11Task2,
 }
 
 // Run ...
