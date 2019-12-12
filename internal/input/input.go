@@ -1,5 +1,7 @@
 package input
 
+import "io/ioutil"
+
 // Get ...
 func Get(day, task, testCode int) interface{} {
 	switch day*100 + task*10 + testCode {
@@ -27,7 +29,26 @@ func Get(day, task, testCode int) interface{} {
 		return []int{109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99}
 	case 912:
 		return []int{104, 1125899906842624, 99}
+	case 1011, 1021:
+		data, err := ioutil.ReadFile("internal/input/day10_test1.txt")
+		if err != nil {
+			panic(err)
+		}
+		return string(data)
+	case 1012, 1022:
+		data, err := ioutil.ReadFile("internal/input/day10_test2.txt")
+		if err != nil {
+			panic(err)
+		}
+		return string(data)
+	case 1010, 1020:
+		data, err := ioutil.ReadFile("internal/input/day10.txt")
+		if err != nil {
+			panic(err)
+		}
+		return string(data)
 	}
+
 	panic("No input!")
 }
 
