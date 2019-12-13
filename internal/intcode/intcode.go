@@ -8,6 +8,7 @@ type Parser struct {
 	input  []int
 	stdin  chan int
 	stdout chan int
+	signal chan int
 }
 
 // NewParser ...
@@ -21,6 +22,20 @@ func NewParser(input []int, stdin, stdout chan int) *Parser {
 		stdin:  stdin,
 		stdout: stdout,
 		pc:     0,
+	}
+}
+
+func NewParserWithInputSignaling(input []int, stdin, stdout chan int, signal chan int) *Parser {
+	in := make([]int, len(input)*10)
+	for i, a := range input {
+		in[i] = a
+	}
+	return &Parser{
+		input:  in,
+		stdin:  stdin,
+		stdout: stdout,
+		pc:     0,
+		signal: signal,
 	}
 }
 
@@ -68,6 +83,9 @@ func (p *Parser) Parse() []int {
 			p.input[c] = p.input[a] * p.input[b]
 			i += 4
 		case 3:
+			if p.signal != nil {
+				p.signal <- 1
+			}
 			if p.stdin != nil {
 				p.input[a] = <-p.stdin
 			} else {
